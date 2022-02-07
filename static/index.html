@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>generate hashed password</title>
+    <script>
+        async function generate(){
+            let input = document.getElementById("password")
+            let password = input.value
+            let res = await fetch("/generate",{
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    password
+                })
+            })
+            if(!res.ok){
+                consolle.error("Cannot generate hashed password")
+            }else{
+                res = await res.json()
+                let hashedPassword = document.getElementById("generated-hashed-password")
+                hashedPassword.innerText = res.hashedPassword
+
+            }
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <label>password:</label>
+        <input id="password" type="password">
+        <button onclick="generate()">generate</button>
+        <p>
+            generated hashed password: 
+            <span id="generated-hashed-password"></span>
+        </p>
+    </div>
+</body>
+</html>
